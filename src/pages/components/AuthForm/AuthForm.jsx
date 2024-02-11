@@ -1,8 +1,26 @@
 import { Box, Button, Flex, Image, Input, Text, VStack } from '@chakra-ui/react'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true)
+  const [inputs, setInputs] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
+
+  const navigate = useNavigate()
+
+  const handleAuth = () => {
+    if (!inputs.email || !inputs.password) {
+      alert('Please provide an email and password')
+      return
+    }
+
+    console.log('inputs', inputs)
+    navigate('/')
+  }
 
   return (
     <>
@@ -14,18 +32,40 @@ const AuthForm = () => {
             cursor={'pointer'}
             alt='Instagram Logo'
           />
-          <Input placeholder='Email' fontSize={14} type='email' />
-          <Input placeholder='Password' fontSize={14} type='password' />
+          <Input
+            placeholder='Email'
+            fontSize={14}
+            type='email'
+            value={inputs.email}
+            onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
+          />
+          <Input
+            placeholder='Password'
+            fontSize={14}
+            type='password'
+            value={inputs.password}
+            onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
+          />
 
           {!isLogin ? (
             <Input
               placeholder='Confirm Password'
               fontSize={14}
               type='password'
+              value={inputs.confirmPassword}
+              onChange={(e) =>
+                setInputs({ ...inputs, confirmPassword: e.target.value })
+              }
             />
           ) : null}
 
-          <Button width={'full'} colorScheme='blue' size={'sm'} fontSize={14}>
+          <Button
+            width={'full'}
+            colorScheme='blue'
+            size={'sm'}
+            fontSize={14}
+            onClick={handleAuth}
+          >
             {isLogin ? 'Login' : 'Register'}
           </Button>
 
